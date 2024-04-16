@@ -1,15 +1,17 @@
 import styled from "styled-components";
 import {ICommentProps} from "../components/comment/Comment";
 import LikeButton from "./LikeButton";
+import {calculateDate} from "src/lib/date";
 
 const CommentInfo = ({comment}: ICommentProps) => {
+    const time = calculateDate(comment.created);
     return (
         <StyledCommentInfo>
             <Wrapper>
                 <StyledAvatar src={comment.authorInfo?.avatar} />
                 <StyledAuthorInfo>
                     <p>{comment.authorInfo?.name}</p>
-                    <StyledTime>{comment.created}</StyledTime>
+                    <StyledTime>{time}</StyledTime>
                 </StyledAuthorInfo>
             </Wrapper>
             <LikeButton
@@ -62,4 +64,5 @@ const StyledAuthorInfo = styled.div`
 const StyledTime = styled.p`
     color: #8297ab;
     font-family: "Lato, regular";
+    padding-top: 5px;
 `;

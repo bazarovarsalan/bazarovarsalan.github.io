@@ -1,5 +1,5 @@
 import {useFetchAuthors, useFetchComments} from "../../lib/queries";
-import {useEffect, useState} from "react";
+import {MouseEventHandler, useEffect, useState} from "react";
 import {
     IAuthor,
     ICommentsWithAuthor,
@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Title from "./Title";
 import Comment from "./comment/Comment";
 import LoadMoreButton from "../widgets/LoadMoreButton";
+import {useCallback} from "react";
 
 const AllComments = () => {
     const [page, setPage] = useState<number>(1);
@@ -66,13 +67,27 @@ const AllComments = () => {
         }
     }, [authorsData, commentsData, page]);
 
+    console.log(commentsWithAuthor);
+
+    const handlerLoadMore = useCallback(
+        (event: React.MouseEventHandler<HTMLButtonElement>) => {
+            console.log("123");
+            const totalPages = commentsData?.pagination?.total_pages;
+            if (totalPages && page <= totalPages) {
+                return;
+            }
+            setPage((prev) => prev + 1);
+        },
+        [commentsData?.pagination?.total_pages],
+    );
+
     return (
         <Wrapper>
             <Title commentsWithAuthor={commentsWithAuthor} />
             {commentsWithAuthor.map((comment) => {
                 return <Comment key={comment.id} comment={comment} />;
             })}
-            <LoadMoreButton />
+            <LoadMoreButton onClick={handlerLoadMore} />
         </Wrapper>
     );
 };

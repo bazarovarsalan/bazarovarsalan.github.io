@@ -1,9 +1,13 @@
 import styled from "styled-components";
 
-const LoadMoreButton = () => {
+interface ILoadMoreButton {
+    onClick: (event: React.MouseEventHandler<HTMLButtonElement>) => void;
+}
+
+const LoadMoreButton = ({onClick}: ILoadMoreButton) => {
     return (
         <>
-            <StyledButton>Загрузить еще</StyledButton>
+            <StyledButton onClick={onClick}>Загрузить еще</StyledButton>
             <Div></Div>
         </>
     );

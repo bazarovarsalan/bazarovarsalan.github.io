@@ -13,7 +13,11 @@ const Title = ({commentsWithAuthor}: ITitle) => {
         0,
     );
 
-    const commentsQuantity = wordHelper(commentsWithAuthor.length);
+    const commentsQuantity = wordHelper(commentsWithAuthor.length, [
+        " комментарий",
+        " комментария",
+        " комментариев",
+    ]);
 
     return (
         <StyledTitle>
