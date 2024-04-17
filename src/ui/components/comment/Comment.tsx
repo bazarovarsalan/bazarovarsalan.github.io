@@ -5,12 +5,16 @@ import CommentInfo from "../../widgets/CommentInfo";
 
 export interface ICommentProps {
     comment: ICommentsWithAuthor;
+    toLikeCommentToggle: (id: number, updateLikes: number) => void;
 }
 
-const Comment = ({comment}: ICommentProps) => {
+const Comment = ({comment, toLikeCommentToggle}: ICommentProps) => {
     return (
         <WrapperComment>
-            <CommentInfo comment={comment} />
+            <CommentInfo
+                comment={comment}
+                toLikeCommentToggle={toLikeCommentToggle}
+            />
             <CommentText text={comment.text} />
         </WrapperComment>
     );

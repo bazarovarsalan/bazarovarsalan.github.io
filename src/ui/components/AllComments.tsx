@@ -1,5 +1,5 @@
 import {useFetchAuthors, useFetchComments} from "../../lib/queries";
-import {MouseEventHandler, useEffect, useState} from "react";
+import React, {MouseEventHandler, useEffect, useState} from "react";
 import {
     IAuthor,
     ICommentsWithAuthor,
@@ -37,20 +37,28 @@ const AllComments = () => {
     const [isErrorCommentsWithAuthor, setIsErrorCommentsWithAuthor] =
         useState(false);
 
-    const combineCommentsWithAuthor = (
-        authors: IAuthor[],
-        comments: IPaginationComments,
-    ) => {
-        const result = comments?.data.map((comment) => {
-            return {
-                ...comment,
-                authorInfo: authors.find(
-                    (author) => author.id === comment.author,
-                ),
-            };
-        });
-        return result;
-    };
+    const combineCommentsWithAuthor = useCallback(
+        (authors: IAuthor[], comments: IPaginationComments) => {
+            const result = comments?.data.map((comment) => {
+                return {
+                    ...comment,
+                    authorInfo: authors.find(
+                        (author) => author.id === comment.author,
+                    ),
+                    likes: comment.likes < 0 ? 0 : comment.likes,
+                };
+            });
+
+            return result.sort((a: any, b: any) => {
+                var dateA: Date = new Date(a.created);
+                var dateB: Date = new Date(b.created);
+                return Number(dateB) - Number(dateA);
+            });
+        },
+        [commentsData, authorsData],
+    );
+
+    const [disabledLoadMore, setDisabledLoadMore] = useState(false);
 
     useEffect(() => {
         setIsLoadingCommentsWithAuthor(commentsIsLoading || authorsIsLoading);
@@ -67,27 +75,53 @@ const AllComments = () => {
         }
     }, [authorsData, commentsData, page]);
 
-    console.log(commentsWithAuthor);
-
     const handlerLoadMore = useCallback(
-        (event: React.MouseEventHandler<HTMLButtonElement>) => {
-            console.log("123");
+        (event: React.MouseEvent) => {
+            event.preventDefault();
             const totalPages = commentsData?.pagination?.total_pages;
-            if (totalPages && page <= totalPages) {
-                return;
+            if (totalPages && page >= totalPages) {
+                setDisabledLoadMore(true);
+            } else {
+                setDisabledLoadMore(false);
             }
             setPage((prev) => prev + 1);
         },
         [commentsData?.pagination?.total_pages],
     );
 
+    const toLikeCommentToggle = (id: number, updateLikes: number): void => {
+        setCommentsWithAuthor((prev) =>
+            prev.map((comment) =>
+                comment.id === id ? {...comment, likes: updateLikes} : comment,
+            ),
+        );
+    };
+
+    const totalLikes = commentsWithAuthor.reduce(
+        (acc, commment) => acc + commment.likes,
+        0,
+    );
+
     return (
         <Wrapper>
-            <Title commentsWithAuthor={commentsWithAuthor} />
+            <Title
+                commentsWithAuthor={commentsWithAuthor}
+                totalLikes={totalLikes}
+            />
             {commentsWithAuthor.map((comment) => {
-                return <Comment key={comment.id} comment={comment} />;
+                console.log(comment.likes);
+                return (
+                    <Comment
+                        key={comment.id}
+                        comment={comment}
+                        toLikeCommentToggle={toLikeCommentToggle}
+                    />
+                );
             })}
-            <LoadMoreButton onClick={handlerLoadMore} />
+            <LoadMoreButton
+                onClick={handlerLoadMore}
+                disabled={disabledLoadMore}
+            />
         </Wrapper>
     );
 };

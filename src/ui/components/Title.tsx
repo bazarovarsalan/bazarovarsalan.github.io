@@ -5,14 +5,10 @@ import {wordHelper} from "../../lib/wordHelper";
 
 interface ITitle {
     commentsWithAuthor: ICommentsWithAuthor[];
+    totalLikes: number;
 }
 
-const Title = ({commentsWithAuthor}: ITitle) => {
-    const totalLikes = commentsWithAuthor.reduce(
-        (acc, commment) => acc + commment.likes,
-        0,
-    );
-
+const Title = ({commentsWithAuthor, totalLikes}: ITitle) => {
     const commentsQuantity = wordHelper(commentsWithAuthor.length, [
         " комментарий",
         " комментария",

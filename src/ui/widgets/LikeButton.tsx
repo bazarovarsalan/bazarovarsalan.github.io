@@ -1,18 +1,39 @@
 import styled from "styled-components";
 import RedLikesImg from "../../assets/images/red-heart.png";
 import RedBorderLikesImg from "../../assets/images/red-border-heart.png";
+import React, {useEffect, useState} from "react";
+import {ICommentsWithAuthor} from "src/types/types";
 
 interface ILikes {
-    quantity: number;
-    onClick: () => void;
+    comment: ICommentsWithAuthor;
     disabled: boolean;
+    toLikeCommentToggle: (id: number, updateLikes: number) => void;
 }
 
-const LikeButton = ({quantity, onClick, disabled}: ILikes) => {
+const LikeButton = ({comment, disabled, toLikeCommentToggle}: ILikes) => {
+    const [toggleLike, setToggleLike] = useState(false);
+
+    useEffect(() => {
+        if (toggleLike) {
+            toLikeCommentToggle(comment.id, comment.likes + 1);
+        } else {
+            toLikeCommentToggle(comment.id, comment.likes - 1);
+        }
+    }, [toggleLike]);
+
+    const onClick = (event: React.MouseEvent) => {
+        event.preventDefault();
+        setToggleLike((prev) => !prev);
+    };
+
     return (
         <LikeButtonWrapper>
-            <StyledLikeButton onClick={onClick} disabled={disabled} />
-            <span>{quantity}</span>
+            <StyledLikeButton
+                disabled={disabled}
+                onClick={onClick}
+                img={toggleLike ? RedLikesImg : RedBorderLikesImg}
+            />
+            <span>{comment.likes}</span>
         </LikeButtonWrapper>
     );
 };
@@ -29,10 +50,14 @@ const LikeButtonWrapper = styled.div`
     top: 30px;
 `;
 
-const StyledLikeButton = styled.button`
+type StyledLikeButtonProps = {
+    img: string;
+};
+
+const StyledLikeButton = styled.button<StyledLikeButtonProps>`
     width: 22px;
     height: 20px;
-    background-image: url(${RedLikesImg});
+    background-image: url(${(props) => props.img});
     background-size: contain;
     background-repeat: no-repeat;
     border: none;

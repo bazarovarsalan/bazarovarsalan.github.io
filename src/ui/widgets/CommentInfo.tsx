@@ -3,21 +3,22 @@ import {ICommentProps} from "../components/comment/Comment";
 import LikeButton from "./LikeButton";
 import {calculateDate} from "src/lib/date";
 
-const CommentInfo = ({comment}: ICommentProps) => {
-    const time = calculateDate(comment.created);
+const CommentInfo = ({comment, toLikeCommentToggle}: ICommentProps) => {
+    const timeCreatedComment = calculateDate(comment.created);
+
     return (
         <StyledCommentInfo>
             <Wrapper>
                 <StyledAvatar src={comment.authorInfo?.avatar} />
                 <StyledAuthorInfo>
                     <p>{comment.authorInfo?.name}</p>
-                    <StyledTime>{time}</StyledTime>
+                    <StyledTime>{timeCreatedComment}</StyledTime>
                 </StyledAuthorInfo>
             </Wrapper>
             <LikeButton
-                quantity={comment.likes}
-                onClick={() => console.log("123")}
+                comment={comment}
                 disabled={false}
+                toLikeCommentToggle={toLikeCommentToggle}
             />
         </StyledCommentInfo>
     );
