@@ -1,10 +1,10 @@
-import {ICommentsWithAuthor} from "src/types/types";
+import {ICommentWithAuthor} from "src/types/types";
 import styled from "styled-components";
 import TitleLikes from "../widgets/TitleLikes";
 import {wordHelper} from "../../lib/wordHelper";
 
 interface ITitle {
-    commentsWithAuthor: ICommentsWithAuthor[];
+    commentsWithAuthor: ICommentWithAuthor[];
     totalLikes: number;
 }
 

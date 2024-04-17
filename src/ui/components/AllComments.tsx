@@ -2,7 +2,7 @@ import {useFetchAuthors, useFetchComments} from "../../lib/queries";
 import React, {MouseEventHandler, useEffect, useState} from "react";
 import {
     IAuthor,
-    ICommentsWithAuthor,
+    ICommentWithAuthor,
     IPaginationComments,
 } from "../../types/types";
 import styled from "styled-components";
@@ -29,7 +29,7 @@ const AllComments = () => {
     } = useFetchComments(page);
 
     const [commentsWithAuthor, setCommentsWithAuthor] = useState<
-        ICommentsWithAuthor[]
+        ICommentWithAuthor[]
     >([]);
 
     const [isLoadingCommentsWithAuthor, setIsLoadingCommentsWithAuthor] =
@@ -39,21 +39,42 @@ const AllComments = () => {
 
     const combineCommentsWithAuthor = useCallback(
         (authors: IAuthor[], comments: IPaginationComments) => {
-            const result = comments?.data.map((comment) => {
-                return {
-                    ...comment,
-                    authorInfo: authors.find(
-                        (author) => author.id === comment.author,
-                    ),
-                    likes: comment.likes < 0 ? 0 : comment.likes,
-                };
-            });
+            const result: ICommentWithAuthor[] = comments?.data.map(
+                (comment) => {
+                    return {
+                        ...comment,
+                        authorInfo: authors.find(
+                            (author) => author.id === comment.author,
+                        ),
+                        likes: comment.likes < 0 ? 0 : comment.likes,
+                        children: [],
+                    };
+                },
+            );
 
-            return result.sort((a: any, b: any) => {
+            result.sort((a: any, b: any) => {
                 var dateA: Date = new Date(a.created);
                 var dateB: Date = new Date(b.created);
                 return Number(dateB) - Number(dateA);
             });
+
+            const map = new Map<number | null, ICommentWithAuthor[]>();
+
+            for (const comment of result) {
+                if (map.has(comment.parent)) {
+                    map.get(comment.parent)?.push(comment);
+                } else {
+                    map.set(comment.parent, [comment]);
+                }
+            }
+
+            for (const comment of result) {
+                comment.children = map.get(comment.id) || [];
+            }
+
+            const roots = map.get(null) || [];
+
+            return roots;
         },
         [commentsData, authorsData],
     );
@@ -101,6 +122,7 @@ const AllComments = () => {
         (acc, commment) => acc + commment.likes,
         0,
     );
+    console.log(commentsWithAuthor);
 
     return (
         <Wrapper>
@@ -109,7 +131,6 @@ const AllComments = () => {
                 totalLikes={totalLikes}
             />
             {commentsWithAuthor.map((comment) => {
-                console.log(comment.likes);
                 return (
                     <Comment
                         key={comment.id}

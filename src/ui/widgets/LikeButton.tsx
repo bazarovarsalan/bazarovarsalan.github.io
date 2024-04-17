@@ -2,10 +2,10 @@ import styled from "styled-components";
 import RedLikesImg from "../../assets/images/red-heart.png";
 import RedBorderLikesImg from "../../assets/images/red-border-heart.png";
 import React, {useEffect, useState} from "react";
-import {ICommentsWithAuthor} from "src/types/types";
+import {ICommentWithAuthor} from "src/types/types";
 
 interface ILikes {
-    comment: ICommentsWithAuthor;
+    comment: ICommentWithAuthor;
     disabled: boolean;
     toLikeCommentToggle: (id: number, updateLikes: number) => void;
 }
@@ -14,11 +14,8 @@ const LikeButton = ({comment, disabled, toLikeCommentToggle}: ILikes) => {
     const [toggleLike, setToggleLike] = useState(false);
 
     useEffect(() => {
-        if (toggleLike) {
-            toLikeCommentToggle(comment.id, comment.likes + 1);
-        } else {
-            toLikeCommentToggle(comment.id, comment.likes - 1);
-        }
+        const likes = toggleLike ? comment.likes + 1 : comment.likes - 1;
+        toLikeCommentToggle(comment.id, likes);
     }, [toggleLike]);
 
     const onClick = (event: React.MouseEvent) => {

@@ -1,10 +1,10 @@
-import {ICommentsWithAuthor} from "src/types/types";
+import {ICommentWithAuthor} from "src/types/types";
 import styled from "styled-components";
 import CommentText from "../../widgets/CommentText";
 import CommentInfo from "../../widgets/CommentInfo";
 
 export interface ICommentProps {
-    comment: ICommentsWithAuthor;
+    comment: ICommentWithAuthor;
     toLikeCommentToggle: (id: number, updateLikes: number) => void;
 }
 
@@ -16,6 +16,15 @@ const Comment = ({comment, toLikeCommentToggle}: ICommentProps) => {
                 toLikeCommentToggle={toLikeCommentToggle}
             />
             <CommentText text={comment.text} />
+            {comment.children.map((child) => {
+                return (
+                    <Comment
+                        key={child.id}
+                        comment={child}
+                        toLikeCommentToggle={toLikeCommentToggle}
+                    />
+                );
+            })}
         </WrapperComment>
     );
 };

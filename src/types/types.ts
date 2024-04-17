@@ -22,6 +22,7 @@ export interface IPaginationComments {
     data: IComment[];
 }
 
-export interface ICommentsWithAuthor extends IComment {
+export interface ICommentWithAuthor extends IComment {
     authorInfo: IAuthor | undefined;
+    children: ICommentWithAuthor[];
 }
