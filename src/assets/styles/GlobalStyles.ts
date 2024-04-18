@@ -27,8 +27,9 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    font-family: 'Lato', bold;
-    font-size: 16px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
     color: #FFF;
 }
 

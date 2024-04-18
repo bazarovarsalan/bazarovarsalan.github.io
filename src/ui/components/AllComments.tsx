@@ -13,6 +13,49 @@ import {useCallback} from "react";
 import {Loader} from "../widgets/Loader";
 import ErrorComponent from "./ErrorComponent";
 
+const combineCommentsWithAuthor = (
+    authors: IAuthor[],
+    comments: IPaginationComments,
+) => {
+    const result: ICommentWithAuthor[] = comments?.data.map((comment) => {
+        return {
+            ...comment,
+            authorInfo: authors.find((author) => author.id === comment.author),
+            likes: comment.likes < 0 ? 0 : comment.likes,
+            children: [],
+        };
+    });
+
+    const sortedComments = toSortComments(result);
+
+    const map = new Map<number | null, ICommentWithAuthor[]>();
+
+    for (const comment of sortedComments) {
+        if (map.has(comment.parent)) {
+            map.get(comment.parent)?.push(comment);
+        } else {
+            map.set(comment.parent, [comment]);
+        }
+    }
+
+    for (const comment of sortedComments) {
+        comment.children = map.get(comment.id) || [];
+    }
+
+    const roots = map.get(null) || [];
+
+    return roots;
+};
+
+function toSortComments(comments: ICommentWithAuthor[]) {
+    const result = comments.sort((a: any, b: any) => {
+        var dateA: Date = new Date(a.created);
+        var dateB: Date = new Date(b.created);
+        return Number(dateB) - Number(dateA);
+    });
+    return result;
+}
+
 const AllComments = () => {
     const [page, setPage] = useState<number>(1);
 
@@ -39,48 +82,6 @@ const AllComments = () => {
     const [isErrorCommentsWithAuthor, setIsErrorCommentsWithAuthor] =
         useState(false);
 
-    const combineCommentsWithAuthor = useCallback(
-        (authors: IAuthor[], comments: IPaginationComments) => {
-            const result: ICommentWithAuthor[] = comments?.data.map(
-                (comment) => {
-                    return {
-                        ...comment,
-                        authorInfo: authors.find(
-                            (author) => author.id === comment.author,
-                        ),
-                        likes: comment.likes < 0 ? 0 : comment.likes,
-                        children: [],
-                    };
-                },
-            );
-
-            result.sort((a: any, b: any) => {
-                var dateA: Date = new Date(a.created);
-                var dateB: Date = new Date(b.created);
-                return Number(dateB) - Number(dateA);
-            });
-
-            const map = new Map<number | null, ICommentWithAuthor[]>();
-
-            for (const comment of result) {
-                if (map.has(comment.parent)) {
-                    map.get(comment.parent)?.push(comment);
-                } else {
-                    map.set(comment.parent, [comment]);
-                }
-            }
-
-            for (const comment of result) {
-                comment.children = map.get(comment.id) || [];
-            }
-
-            const roots = map.get(null) || [];
-
-            return roots;
-        },
-        [commentsData, authorsData],
-    );
-
     const [disabledLoadMore, setDisabledLoadMore] = useState(false);
 
     useEffect(() => {
@@ -94,7 +95,13 @@ const AllComments = () => {
                 authorsData,
                 commentsData,
             );
-            setCommentsWithAuthor((prev) => [...prev, ...combined]);
+            const newState = toSortComments([
+                ...commentsWithAuthor,
+                ...combined,
+            ]);
+
+            setCommentsWithAuthor(newState);
+            console.log("comments updated");
         }
     }, [authorsData, commentsData, page]);
 

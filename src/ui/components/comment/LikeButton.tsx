@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import RedLikesImg from "../../assets/images/red-heart.png";
-import RedBorderLikesImg from "../../assets/images/red-border-heart.png";
-import React, {useEffect, useState, useRef} from "react";
+import RedLikesImg from "../../../assets/images/red-heart.png";
+import RedBorderLikesImg from "../../../assets/images/red-border-heart.png";
+import React, {useRef} from "react";
 import {ICommentWithAuthor} from "src/types/types";
 
 interface ILikes {

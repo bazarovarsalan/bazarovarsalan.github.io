@@ -43,8 +43,12 @@ const StyledTitle = styled.div`
     justify-content: space-between;
     position: relative;
 
+    @media (max-width: 768px) {
+        width: 25.5rem;
+    }
+
     @media (max-width: 480px) {
-        font-size: 14px;
+        width: 17rem;
     }
 `;
 

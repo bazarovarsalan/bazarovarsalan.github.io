@@ -1,7 +1,7 @@
 import {ICommentWithAuthor} from "src/types/types";
 import styled from "styled-components";
-import CommentText from "../../widgets/CommentText";
-import CommentInfo from "../../widgets/CommentInfo";
+import CommentText from "./CommentText";
+import CommentInfo from "../../components/comment/CommentInfo";
 
 export interface ICommentProps {
     comment: ICommentWithAuthor;

@@ -16,11 +16,14 @@ const StyledCommentText = styled.span`
     max-height: 100%;
     padding-left: 88px;
     display: inline-flex;
-    word-break: break-all;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 
     @media (max-width: 480px) {
         width: 17rem;
         padding-left: 56px;
         font-size: 14px;
+        word-break: break-all;
     }
 `;

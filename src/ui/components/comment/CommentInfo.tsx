@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {ICommentProps} from "../components/comment/Comment";
+import {ICommentProps} from "./Comment";
 import LikeButton from "./LikeButton";
 import {calculateDate} from "src/lib/date";
 
@@ -36,7 +36,7 @@ const StyledCommentInfo = styled.div`
 
 const Wrapper = styled.div`
     width: 100%;
-    height: 4.25rem;
+    height: 5.25rem;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -56,10 +56,9 @@ const StyledAvatar = styled.img`
 
 const StyledAuthorInfo = styled.div`
     width: 14.313rem;
-    height: 2.688rem;
+    height: 70px;
     display: flex;
     flex-direction: column;
-
     @media (max-width: 480px) {
         font-size: 14px;
     }
@@ -69,4 +68,6 @@ const StyledTime = styled.p`
     color: #8297ab;
     font-family: "Lato, regular";
     padding-top: 5px;
+    height: 20px;
+    width: 100%;
 `;
