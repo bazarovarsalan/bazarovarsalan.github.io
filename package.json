@@ -47,6 +47,7 @@
         ]
     },
     "devDependencies": {
-        "@tanstack/eslint-plugin-query": "^5.28.11"
+        "@tanstack/eslint-plugin-query": "^5.28.11",
+        "jest": "^27.5.1"
     }
 }

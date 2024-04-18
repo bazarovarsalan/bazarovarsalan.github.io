@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 `;
 
 const ErrorMessage = styled.span`
-    max-width: 15rem;
+    max-width: 100%;
     max-height: 30px;
     color: red;
     font-size: 25px;

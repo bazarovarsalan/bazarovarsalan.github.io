@@ -54,5 +54,6 @@ const StyledTitle = styled.div`
 
 const StyledCommentsQuantity = styled.p`
     font-size: 16px;
-    font-family: "Lato, bold";
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
 `;

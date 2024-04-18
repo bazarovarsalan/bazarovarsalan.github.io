@@ -24,7 +24,8 @@ const StyledButton = styled.button`
     height: 36px;
     margin-bottom: 30px;
     background-color: #313439;
-    font-family: "Lato, Regular";
+    font-family: "Lato", sans-serif;
+    font-weight: normal;
     font-size: 16px;
     color: #fff;
     cursor: pointer;

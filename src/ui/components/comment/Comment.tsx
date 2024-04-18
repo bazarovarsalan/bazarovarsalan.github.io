@@ -18,15 +18,18 @@ const Comment = ({comment, toLikeCommentToggle}: ICommentProps) => {
                 />
                 <CommentText text={comment.text} />
             </WrapperComment>
-            {comment.children.map((child) => {
-                return (
-                    <Comment
-                        key={child.id}
-                        comment={child}
-                        toLikeCommentToggle={toLikeCommentToggle}
-                    />
-                );
-            })}
+            {comment.children.length > 0 &&
+                comment.children.map((child) => {
+                    return (
+                        <WrapperChildComment key={child.id}>
+                            <Comment
+                                key={child.id}
+                                comment={child}
+                                toLikeCommentToggle={toLikeCommentToggle}
+                            />
+                        </WrapperChildComment>
+                    );
+                })}
         </>
     );
 };
@@ -42,5 +45,12 @@ const WrapperComment = styled.div`
     position: relative;
     margin-top: 32px;
     margin-bottom: 20px;
-    margin-left: 1.2em;
+`;
+
+const WrapperChildComment = styled.div`
+    padding-left: 33px;
+
+    @media (max-width: 768px) {
+        padding-left: 20px;
+    }
 `;

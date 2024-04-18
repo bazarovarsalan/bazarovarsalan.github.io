@@ -101,7 +101,6 @@ const AllComments = () => {
             ]);
 
             setCommentsWithAuthor(newState);
-            console.log("comments updated");
         }
     }, [authorsData, commentsData, page]);
 
@@ -113,8 +112,8 @@ const AllComments = () => {
                 setDisabledLoadMore(true);
             } else {
                 setDisabledLoadMore(false);
+                setPage((prev) => prev + 1);
             }
-            setPage((prev) => prev + 1);
         },
         [commentsData?.pagination?.total_pages],
     );
@@ -146,11 +145,13 @@ const AllComments = () => {
                     />
                     {commentsWithAuthor.map((comment) => {
                         return (
-                            <Comment
-                                key={comment.id}
-                                comment={comment}
-                                toLikeCommentToggle={toLikeCommentToggle}
-                            />
+                            <StyledWrapperComments key={comment.id}>
+                                <Comment
+                                    key={comment.id}
+                                    comment={comment}
+                                    toLikeCommentToggle={toLikeCommentToggle}
+                                />
+                            </StyledWrapperComments>
                         );
                     })}
 
@@ -173,6 +174,7 @@ export default AllComments;
 const Wrapper = styled.div`
     width: 35.063rem;
     height: 100vh;
+    max-height: 100%;
     margin-top: 5rem;
     position: relative;
     padding-bottom: 30px;
@@ -184,4 +186,8 @@ const Wrapper = styled.div`
     @media (max-width: 480px) {
         width: 17rem;
     }
+`;
+
+const StyledWrapperComments = styled.div`
+    max-width: 100%;
 `;

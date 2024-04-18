@@ -66,8 +66,11 @@ const StyledAuthorInfo = styled.div`
 
 const StyledTime = styled.p`
     color: #8297ab;
-    font-family: "Lato, regular";
     padding-top: 5px;
     height: 20px;
     width: 100%;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-size: 14;
+    font-style: normal;
 `;
