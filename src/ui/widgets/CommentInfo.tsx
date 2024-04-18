@@ -35,31 +35,34 @@ const StyledCommentInfo = styled.div`
 `;
 
 const Wrapper = styled.div`
-    width: 317px;
-    height: 68px;
+    width: 100%;
+    height: 4.25rem;
     display: flex;
     align-items: center;
     gap: 20px;
-`;
-
-const WrapperLikes = styled.div`
-    display: flex;
-    align-items: center;
 `;
 
 const StyledAvatar = styled.img`
     object-fit: cover;
     object-position: top center;
     border-radius: 50%;
-    width: 68px;
-    height: 68px;
+    width: 4.25rem;
+    height: 4.25rem;
+    @media (max-width: 480px) {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
 `;
 
 const StyledAuthorInfo = styled.div`
-    width: 229px;
-    height: 43px;
+    width: 14.313rem;
+    height: 2.688rem;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+    }
 `;
 
 const StyledTime = styled.p`

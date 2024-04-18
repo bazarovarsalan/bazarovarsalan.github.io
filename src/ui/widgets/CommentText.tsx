@@ -15,5 +15,12 @@ const StyledCommentText = styled.span`
     min-height: 57px;
     max-height: 100%;
     padding-left: 88px;
-    display: block;
+    display: inline-flex;
+    word-break: break-all;
+
+    @media (max-width: 480px) {
+        width: 17rem;
+        padding-left: 56px;
+        font-size: 14px;
+    }
 `;

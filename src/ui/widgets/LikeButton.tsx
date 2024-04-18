@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import RedLikesImg from "../../assets/images/red-heart.png";
 import RedBorderLikesImg from "../../assets/images/red-border-heart.png";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {ICommentWithAuthor} from "src/types/types";
 
 interface ILikes {
@@ -11,16 +11,13 @@ interface ILikes {
 }
 
 const LikeButton = ({comment, disabled, toLikeCommentToggle}: ILikes) => {
-    const [toggleLike, setToggleLike] = useState(false);
-
-    useEffect(() => {
-        const likes = toggleLike ? comment.likes + 1 : comment.likes - 1;
-        toLikeCommentToggle(comment.id, likes);
-    }, [toggleLike]);
+    const buttonRef = useRef(false);
 
     const onClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        setToggleLike((prev) => !prev);
+        buttonRef.current = !buttonRef.current;
+        const likes = buttonRef.current ? comment.likes + 1 : comment.likes - 1;
+        toLikeCommentToggle(comment.id, likes);
     };
 
     return (
@@ -28,7 +25,7 @@ const LikeButton = ({comment, disabled, toLikeCommentToggle}: ILikes) => {
             <StyledLikeButton
                 disabled={disabled}
                 onClick={onClick}
-                img={toggleLike ? RedLikesImg : RedBorderLikesImg}
+                img={buttonRef.current ? RedLikesImg : RedBorderLikesImg}
             />
             <span>{comment.likes}</span>
         </LikeButtonWrapper>
@@ -45,6 +42,10 @@ const LikeButtonWrapper = styled.div`
     position: absolute;
     right: 0;
     top: 30px;
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+    }
 `;
 
 type StyledLikeButtonProps = {

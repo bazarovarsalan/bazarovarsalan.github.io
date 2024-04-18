@@ -28,6 +28,7 @@ body {
     display: flex;
     justify-content: center;
     font-family: 'Lato', bold;
+    font-size: 16px;
     color: #FFF;
 }
 

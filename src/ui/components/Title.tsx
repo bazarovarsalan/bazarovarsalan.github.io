@@ -2,14 +2,22 @@ import {ICommentWithAuthor} from "src/types/types";
 import styled from "styled-components";
 import TitleLikes from "../widgets/TitleLikes";
 import {wordHelper} from "../../lib/wordHelper";
+import {IComment} from "../../types/types";
+import {useEffect, useState} from "react";
 
 interface ITitle {
-    commentsWithAuthor: ICommentWithAuthor[];
+    comments: IComment[];
     totalLikes: number;
 }
 
-const Title = ({commentsWithAuthor, totalLikes}: ITitle) => {
-    const commentsQuantity = wordHelper(commentsWithAuthor.length, [
+const Title = ({comments, totalLikes}: ITitle) => {
+    const [totalComments, setTotalComments] = useState(0);
+
+    useEffect(() => {
+        setTotalComments((prev) => prev + comments.length);
+    }, [comments]);
+
+    const commentsQuantity = wordHelper(totalComments, [
         " комментарий",
         " комментария",
         " комментариев",
@@ -34,6 +42,10 @@ const StyledTitle = styled.div`
     flex-direction: row;
     justify-content: space-between;
     position: relative;
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+    }
 `;
 
 const StyledCommentsQuantity = styled.p`

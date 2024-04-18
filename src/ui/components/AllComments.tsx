@@ -1,5 +1,5 @@
 import {useFetchAuthors, useFetchComments} from "../../lib/queries";
-import React, {MouseEventHandler, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     IAuthor,
     ICommentWithAuthor,
@@ -10,6 +10,8 @@ import Title from "./Title";
 import Comment from "./comment/Comment";
 import LoadMoreButton from "../widgets/LoadMoreButton";
 import {useCallback} from "react";
+import {Loader} from "../widgets/Loader";
+import ErrorComponent from "./ErrorComponent";
 
 const AllComments = () => {
     const [page, setPage] = useState<number>(1);
@@ -122,37 +124,57 @@ const AllComments = () => {
         (acc, commment) => acc + commment.likes,
         0,
     );
-    console.log(commentsWithAuthor);
+
+    if (isErrorCommentsWithAuthor) {
+        return <ErrorComponent />;
+    }
 
     return (
-        <Wrapper>
-            <Title
-                commentsWithAuthor={commentsWithAuthor}
-                totalLikes={totalLikes}
-            />
-            {commentsWithAuthor.map((comment) => {
-                return (
-                    <Comment
-                        key={comment.id}
-                        comment={comment}
-                        toLikeCommentToggle={toLikeCommentToggle}
+        <>
+            {commentsWithAuthor.length > 0 && (
+                <Wrapper>
+                    <Title
+                        comments={commentsData?.data || []}
+                        totalLikes={totalLikes || 0}
                     />
-                );
-            })}
-            <LoadMoreButton
-                onClick={handlerLoadMore}
-                disabled={disabledLoadMore}
-            />
-        </Wrapper>
+                    {commentsWithAuthor.map((comment) => {
+                        return (
+                            <Comment
+                                key={comment.id}
+                                comment={comment}
+                                toLikeCommentToggle={toLikeCommentToggle}
+                            />
+                        );
+                    })}
+
+                    {isLoadingCommentsWithAuthor ? (
+                        <Loader />
+                    ) : (
+                        <LoadMoreButton
+                            onClick={handlerLoadMore}
+                            disabled={disabledLoadMore}
+                        />
+                    )}
+                </Wrapper>
+            )}
+        </>
     );
 };
 
 export default AllComments;
 
 const Wrapper = styled.div`
-    width: 562px;
+    width: 35.063rem;
     height: 100vh;
     margin-top: 5rem;
     position: relative;
     padding-bottom: 30px;
+
+    @media (max-width: 768px) {
+        width: 25.5rem;
+    }
+
+    @media (max-width: 480px) {
+        width: 17rem;
+    }
 `;
