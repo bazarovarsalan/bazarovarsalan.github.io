@@ -1,4 +1,3 @@
-import {ICommentWithAuthor} from "src/types/types";
 import styled from "styled-components";
 import TitleLikes from "../widgets/TitleLikes";
 import {wordHelper} from "../../lib/wordHelper";

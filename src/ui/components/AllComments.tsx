@@ -9,7 +9,6 @@ import styled from "styled-components";
 import Title from "./Title";
 import Comment from "./comment/Comment";
 import LoadMoreButton from "../widgets/LoadMoreButton";
-import {useCallback} from "react";
 import {Loader} from "../widgets/Loader";
 import ErrorComponent from "./ErrorComponent";
 
@@ -95,28 +94,21 @@ const AllComments = () => {
                 authorsData,
                 commentsData,
             );
-            const newState = toSortComments([
-                ...commentsWithAuthor,
-                ...combined,
-            ]);
 
-            setCommentsWithAuthor(newState);
+            setCommentsWithAuthor((prev) => [...prev, ...combined]);
         }
-    }, [authorsData, commentsData, page]);
+    }, [authorsData, commentsData, page, commentsIsSuccess, authorsIsSuccess]);
 
-    const handlerLoadMore = useCallback(
-        (event: React.MouseEvent) => {
-            event.preventDefault();
-            const totalPages = commentsData?.pagination?.total_pages;
-            if (totalPages && page >= totalPages) {
-                setDisabledLoadMore(true);
-            } else {
-                setDisabledLoadMore(false);
-                setPage((prev) => prev + 1);
-            }
-        },
-        [commentsData?.pagination?.total_pages],
-    );
+    const handlerLoadMore = (event: React.MouseEvent) => {
+        event.preventDefault();
+        const totalPages = commentsData?.pagination?.total_pages;
+        if (totalPages && page >= totalPages) {
+            setDisabledLoadMore(true);
+        } else {
+            setDisabledLoadMore(false);
+            setPage((prev) => prev + 1);
+        }
+    };
 
     const toLikeCommentToggle = (id: number, updateLikes: number): void => {
         setCommentsWithAuthor((prev) =>

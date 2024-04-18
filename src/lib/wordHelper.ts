@@ -4,6 +4,6 @@ export function wordHelper(quantity: number, words: string[]): string {
     if (quantity > 10 && quantity < 20)
         return quantity.toString() + " " + words[2];
     if (num > 1 && num < 5) return quantity.toString() + " " + words[1];
-    if (num == 1) return quantity.toString() + " " + words[0];
+    if (num === 1) return quantity.toString() + " " + words[0];
     return quantity.toString() + " " + words[2];
 }
